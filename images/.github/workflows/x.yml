@@ -1,15 +1,19 @@
 name: x workflow
-on: 
-   push
-     branches:
-       - main
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-    docker:
+  docker:
     runs-on: ubuntu-latest
     steps:
-    - name: echo name
-    run: ./script.sh
-    
-    
+      - name: Checkout
+        uses: actions/checkout@v4.0.2
+        
+      - name: echo name
+        run: |
+          chmod +x script.sh
+          ./script.sh
+
     
