@@ -1,18 +1,23 @@
 name: Using matrix strategy 2
-
-on:
-  push:
-  workflow_dispatch:
+on: push
 
 jobs:
-  deploy:
+  node-matrix:
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, ubuntu-20.4, windows-latest]
-        images: [hello-world, alpine]
-    runs-on: ${{ matrix.os }}
+        os: [ubuntu-latest, windows-latest]
+        node-version: [16, 18, 20]
     steps:
-      - name: echo docker details
-        run: docker info
-      - name: run image
-        run: docker run ${{ matrix.images }}
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Check versions
+        run: |
+          node -v
+          npm -v
